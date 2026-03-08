@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>С 8 марта, Ксюшенька! 💐</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #1a0b1a;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Канва для фоновых частиц (лепестки, сердечки) */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Заголовок с эффектом мерцания и глитча */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(3rem, 15vw, 6rem);
+            text-align: center;
+            color: #ffd9f0;
+            text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 2px 2px 0 #4a0036;
+            animation: flicker 3s infinite alternate;
+            margin-bottom: 20px;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493; }
+            50% { opacity: 0.95; text-shadow: 0 0 25px #ffb6c1, 0 0 50px #ff1493, 0 0 10px #fff; }
+            100% { opacity: 1; text-shadow: 0 0 20px #ff9fd0, 0 0 60px #ff69b4, 2px 2px 0 #4a0036; }
+        }
+
+        .sub-message {
+            font-size: 1.4rem;
+            background: rgba(255, 20, 147, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 105, 180, 0.5);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #ffe4f2;
+        }
+
+        /* Карточки с пожеланиями (3D-эффект) */
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin: 40px 0;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: rgba(255, 240, 245, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            border-radius: 30px;
+            padding: 30px 20px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 105, 180, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            color: #fff0f5;
+        }
+
+        .card:hover {
+            transform: translateY(-20px) rotateX(5deg) rotateY(5deg) scale(1.05);
+            box-shadow: 0 30px 60px rgba(255, 20, 147, 0.5), 0 0 50px #ffb6c1;
+            border-color: #ffb6c1;
+        }
+
+        .card i {
+            font-size: 3rem; 
+            display: block;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px gold);
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            font-family: 'Dancing Script', cursive;
+            margin-bottom: 10px;
+            color: #ffdab9;
+        }
+
+        .card p {
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Кнопки с блестящим эффектом */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .glow-button {
+            background: linear-gradient(145deg, #ff3a9e, #c71585);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 60px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.6), 0 0 20px #ffb6c1;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .glow-button:hover {
+            transform: scale(1.07);
+            box-shadow: 0 15px 40px #ff1493, 0 0 40px #fff;
+        }
+
+        .glow-button:active {
+            transform: scale(0.98);
+        }
+
+        .secret-trigger {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px dashed #ffb6c1;
+            color: #ffb6c1;
+            box-shadow: none;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+        }
+
+        .secret-trigger:hover {
+            background: rgba(255, 182, 193, 0.3);
+            border: 2px solid #ff69b4;
+            color: white;
+        }
+
+        /* Модальное окно для игры */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #2d0f27, #1a051a);
+            border-radius: 50px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            border: 2px solid #ff69b4;
+            box-shadow: 0 0 70px #ff1493;
+            text-align: center;
+            animation: popIn 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #ffe4f2;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px #ff69b4;
+        }
+
+        .game-container {
+            margin: 20px 0;
+            position: relative;
+        }
+
+        #gameCanvas {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1/1;
+            background: #260d1f;
+            border-radius: 30px;
+            box-shadow: inset 0 0 30px #ff69b4, 0 20px 30px black;
+            border: 3px solid #ffb6c1;
+            cursor: none;
+            touch-action: none; /* предотвращаем прокрутку при касании */
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            font-size: 1.8rem;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #ffd9f0;
+            text-shadow: 0 0 15px red;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3rem;
+            color: #ffb6c1;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .close-modal:hover {
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Скрытое послание (появляется при клике на заголовок 3 раза) */
+        .hidden-message {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 192, 203, 0.2);
+            border-radius: 40px;
+            font-size: 1.4rem;
+            border-left: 5px solid #ff69b4;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            text-align: center;
+            max-width: 600px;
+        }
+        .hidden-message.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Подпись от Никити */
+        .signature {
+            margin-top: 60px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #ffd9f0;
+            text-shadow: 0 0 15px #ff69b4;
+            border-top: 1px solid rgba(255, 182, 193, 0.5);
+            padding-top: 30px;
+            width: 100%;
+            text-align: center;
+            animation: glowPulse 2s infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            from { text-shadow: 0 0 10px #ffb6c1; }
+            to { text-shadow: 0 0 30px #ff1493, 0 0 10px #fff; }
+        }
+
+        /* Адаптация для телефонов */
+        @media (max-width: 600px) {
+            h1 { font-size: 4rem; }
+            .sub-message { font-size: 1rem; }
+            .card { width: 200px; padding: 20px; }
+            .glow-button { padding: 12px 25px; font-size: 1rem; }
+            .signature { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые частицы (canvas) -->
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="container">
+        <h1 id="mainTitle">💐 С 8 марта, Ксюшенька! 💐</h1>
+        <div class="sub-message">🌸 Самой нежной, красивой и любимой девушке на свете 🌸</div>
+
+        <!-- 3D карточки с пожеланиями -->
+        <div class="cards-grid">
+            <div class="card">
+                <i>🌹</i>
+                <h3>Красота</h3>
+                <p>Твоя улыбка ярче солнца, а глаза глубже океана. Сияй каждый день!</p>
+            </div>
+            <div class="card">
+                <i>💖</i>
+                <h3>Нежность</h3>
+                <p>Спасибо за твою заботу и тепло. Ты делаешь этот мир лучше.</p>
+            </div>
+            <div class="card">
+                <i>✨</i>
+                <h3>Весна</h3>
+                <p>Пусть в душе всегда цветут цветы, а счастье будет бесконечным.</p>
+            </div>
+        </div>
+
+        <!-- Кнопки с сюрпризами -->
+        <div class="button-group">
+            <button class="glow-button" id="surpriseBtn">🎉 Запустить конфетти</button>
+            <button class="glow-button secret-trigger" id="secretGameBtn">🎮 Секретная аркада (для Ксюшеньки)</button>
+        </div>
+
+        <!-- Скрытое послание (появляется после 3 кликов на заголовок) -->
+        <div class="hidden-message" id="secretMessage">
+            💌 Ксюшенька, ты — моё вдохновение. Каждый день с тобой — праздник. 
+            С 8 марта, любовь моя! 🥰
+        </div>
+
+        <!-- Подпись от Никити -->
+        <div class="signature">от твоего Никити</div>
+    </div>
+
+    <!-- Модальное окно с игрой -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2>💗 Лови сердечки! 💗</h2>
+            <div class="game-container">
+                <canvas id="gameCanvas" width="400" height="400"></canvas>
+            </div>
+            <div class="game-stats">
+                <span>❤️ <span id="score">0</span></span>
+                <span>⏱️ <span id="timer">30</span>с</span>
+            </div>
+            <div class="game-controls">
+                <button class="glow-button" id="startGameBtn">▶ Начать игру</button>
+                <button class="glow-button secret-trigger" id="resetGameBtn">🔄 Сброс</button>
+            </div>
+            <p style="color: #ffb6c1; margin-top: 15px;">👆 двигай мышкой или пальцем (лови корзинкой)</p>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------------------------
+            // 1. Фоновые частицы (лепестки / сердечки)
+            // ---------------------------
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function initParticles() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                
+                const particleCount = Math.floor((width * height) / 8000); // адаптивное количество
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        size: Math.random() * 15 + 5,
+                        speedX: (Math.random() - 0.5) * 0.5,
+                        speedY: Math.random() * 0.8 + 0.2,
+                        opacity: Math.random() * 0.6 + 0.2,
+                        shape: Math.random() > 0.5 ? '🌸' : '❤️', // цветочек или сердечко
+                    });
+                }
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, width, height);
+                ctx.font = '20px "Segoe UI", "Arial Unicode MS", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    
+                    // Если есть life (временная частица, например конфетти)
+                    if (p.life !== undefined) {
+                        p.life -= 0.01;
+                        if (p.life <= 0) {
+                            particles.splice(i, 1);
+                            continue;
+                        }
+                        ctx.globalAlpha = p.life * 0.8;
+                        ctx.fillStyle = p.color || '#ffb6c1';
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                        // двигаем
+                        p.x += p.vx || 0;
+                        p.y += p.vy || 0;
+                        if (p.vy !== undefined) p.vy += 0.1; // гравитация
+                    } else {
+                        // фоновые эмодзи
+                        ctx.globalAlpha = p.opacity * (0.7 + 0.3 * Math.sin(Date.now() * 0.002 + p.x));
+                        ctx.fillStyle = '#ffb6c1';
+                        ctx.fillText(p.shape, p.x, p.y);
+                        
+                        p.x += p.speedX;
+                        p.y += p.speedY;
+                        
+                        if (p.y > height + 30) { p.y = -30; p.x = Math.random() * width; }
+                        if (p.x > width + 30) p.x = -30;
+                        if (p.x < -30) p.x = width + 30;
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            window.addEventListener('resize', () => {
+                initParticles();
+            });
+            initParticles();
+            drawParticles();
+
+            // ---------------------------
+            // 2. Конфетти (кнопка)
+            // ---------------------------
+            document.getElementById('surpriseBtn').addEventListener('click', () => {
+                for (let i = 0; i < 50; i++) {
+                    particles.push({
+                        x: width/2 + (Math.random() - 0.5) * 200,
+                        y: height/2 + (Math.random() - 0.5) * 200,
+                        vx: (Math.random() - 0.5) * 8,
+                        vy: (Math.random() - 3) * 5,
+                        size: Math.random() * 8 + 4,
+                        color: `hsl(${Math.random() * 40 + 300}, 90%, 70%)`,
+                        life: 1.0
+                    });
+                }
+            });
+
+            // ---------------------------
+            // 3. Секретное послание (3 клика на заголовок)
+            // ---------------------------
+            let titleClicks = 0;
+            document.getElementById('mainTitle').addEventListener('click', () => {
+                titleClicks++;
+                if (titleClicks >= 3) {
+                    document.getElementById('secretMessage').classList.add('show');
+                    titleClicks = 0;
+                    // добавим немного магии
+                    for (let i=0; i<10; i++) {
+                        particles.push({
+                            x: Math.random() * width,
+                            y: Math.random() * height,
+                            vx: (Math.random()-0.5)*4,
+                            vy: (Math.random()-2)*3,
+                            size: Math.random()*10+5,
+                            color: `gold`,
+                            life: 1.5
+                        });
+                    }
+                }
+            });
+
+            // ---------------------------
+            // 4. Секретная аркада (игра)
+            // ---------------------------
+            const modal = document.getElementById('gameModal');
+            const closeModal = document.getElementById('closeModal');
+            const secretGameBtn = document.getElementById('secretGameBtn');
+            const startGameBtn = document.getElementById('startGameBtn');
+            const resetGameBtn = document.getElementById('resetGameBtn');
+            const gameCanvas = document.getElementById('gameCanvas');
+            const ctxGame = gameCanvas.getContext('2d');
+            const scoreSpan = document.getElementById('score');
+            const timerSpan = document.getElementById('timer');
+
+            let gameActive = false;
+            let score = 0;
+            let timeLeft = 30;
+            let gameInterval;
+            let animationFrame;
+            let basketX = 150; // положение корзины (центр)
+            const basketWidth = 80;
+            const basketHeight = 25;
+            const basketY = 360; // снизу
+
+            let hearts = [];
+
+            function spawnHeart() {
+                hearts.push({
+                    x: Math.random() * (gameCanvas.width - 30) + 15,
+                    y: 15,
+                    size: 20,
+                    speed: Math.random() * 3 + 2,
+                });
+            }
+
+            function drawBasket() {
+                ctxGame.fillStyle = '#ff99cc';
+                ctxGame.shadowColor = '#ff69b4';
+                ctxGame.shadowBlur = 20;
+                ctxGame.beginPath();
+                ctxGame.ellipse(basketX, basketY, basketWidth/2, basketHeight/2, 0, 0, Math.PI*2);
+                ctxGame.fill();
+                ctxGame.shadowBlur = 0;
+                ctxGame.fillStyle = '#ffd9f0';
+                ctxGame.beginPath();
+                ctxGame.ellipse(basketX, basketY-5, basketWidth/3, basketHeight/3, 0, 0, Math.PI*2);
+                ctxGame.fill();
+            }
+
+            function drawHearts() {
+                for (let h of hearts) {
+                    ctxGame.fillStyle = '#ff4d6d';
+                    ctxGame.shadowColor = '#ffb3c6';
+                    ctxGame.shadowBlur = 15;
+                    ctxGame.font = '25px "Segoe UI", "Arial Unicode MS", sans-serif';
+                    ctxGame.fillText('❤️', h.x-12, h.y+8);
+                }
+            }
+
+            function updateGame() {
+                if (!gameActive) return;
+
+                // двигаем сердечки
+                for (let i = hearts.length-1; i >= 0; i--) {
+                    let h = hearts[i];
+                    h.y += h.speed;
+
+                    // проверка на ловлю
+                    if (h.y + 10 > basketY - basketHeight/2 && 
+                        h.x > basketX - basketWidth/2 && 
+                        h.x < basketX + basketWidth/2) {
+                        hearts.splice(i, 1);
+                        score++;
+                        scoreSpan.innerText = score;
+                        continue;
+                    }
+
+                    // упало вниз
+                    if (h.y > gameCanvas.height + 20) {
+                        hearts.splice(i, 1);
+                    }
+                }
+
+                // отрисовка
+                ctxGame.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                ctxGame.fillStyle = '#260d1f';
+                ctxGame.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+                drawHearts();
+                drawBasket();
+
+                // случайное появление сердечек
+                if (Math.random() < 0.03) {
+                    spawnHeart();
+                }
+
+                animationFrame = requestAnimationFrame(updateGame);
+            }
+
+            function startGame() {
+                if (gameActive) return;
+                gameActive = true;
+                score = 0;
+                timeLeft = 30;
+                hearts = [];
+                scoreSpan.innerText = '0';
+                timerSpan.innerText = timeLeft;
+                
+                if (gameInterval) clearInterval(gameInterval);
+                gameInterval = setInterval(() => {
+                    if (!gameActive) return;
+                    timeLeft--;
+                    timerSpan.innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+
+                if (animationFrame) cancelAnimationFrame(animationFrame);
+                updateGame();
+            }
+
+            function endGame() {
+                gameActive = false;
+                clearInterval(gameInterval);
+                cancelAnimationFrame(animationFrame);
+                ctxGame.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                ctxGame.fillStyle = '#260d1f';
+                ctxGame.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+                ctxGame.font = 'bold 20px Montserrat';
+                ctxGame.fillStyle = '#ffb6c1';
+                ctxGame.fillText(`Результат: ${score} ❤️`, 100, 200);
+                // конфетти за результат
+                for (let i=0; i<20; i++) {
+                    particles.push({
+                        x: width/2 + (Math.random()-0.5)*300,
+                        y: height/2,
+                        vx: (Math.random()-0.5)*8,
+                        vy: (Math.random()-3)*5,
+                        size: Math.random()*8+4,
+                        color: `hsl(${Math.random()*40+300}, 90%, 70%)`,
+                        life: 1.5
+                    });
+                }
+            }
+
+            function resetGame() {
+                gameActive = false;
+                clearInterval(gameInterval);
+                cancelAnimationFrame(animationFrame);
+                hearts = [];
+                score = 0;
+                timeLeft = 30;
+                scoreSpan.innerText = '0';
+                timerSpan.innerText = '30';
+                ctxGame.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                ctxGame.fillStyle = '#260d1f';
+                ctxGame.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+                drawBasket();
+            }
+
+            // Управление корзиной
+            function handleMove(e) {
+                if (!gameActive) return;
+                e.preventDefault();
+                const rect = gameCanvas.getBoundingClientRect();
+                const scaleX = gameCanvas.width / rect.width;
+                let clientX;
+                if (e.touches) {
+                    clientX = e.touches[0].clientX;
+                } else {
+                    clientX = e.clientX;
+                }
+                let x = (clientX - rect.left) * scaleX;
+                if (x < basketWidth/2) x = basketWidth/2;
+                if (x > gameCanvas.width - basketWidth/2) x = gameCanvas.width - basketWidth/2;
+                basketX = x;
+            }
+
+            gameCanvas.addEventListener('mousemove', handleMove);
+            gameCanvas.addEventListener('touchmove', handleMove, { passive: false });
+            gameCanvas.addEventListener('touchstart', (e) => e.preventDefault());
+
+            // Кнопки
+            secretGameBtn.addEventListener('click', () => {
+                modal.classList.add('active');
+                resetGame();
+            });
+
+            closeModal.addEventListener('click', () => {
+                modal.classList.remove('active');
+                gameActive = false;
+                clearInterval(gameInterval);
+                cancelAnimationFrame(animationFrame);
+            });
+
+            startGameBtn.addEventListener('click', startGame);
+            resetGameBtn.addEventListener('click', resetGame);
+
+            // Закрытие по клику вне модалки (на фон)
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    gameActive = false;
+                    clearInterval(gameInterval);
+                    cancelAnimationFrame(animationFrame);
+                }
+            });
+
+            // Для красоты при старте
+            resetGame();
+
+            // ---------------------------
+            // 5. Дополнительные фишки: при нажатии на карточки вылетают сердечки
+            // ---------------------------
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', () => {
+                    for (let i=0; i<12; i++) {
+                        particles.push({
+                            x: Math.random() * width,
+                            y: Math.random() * height * 0.5,
+                            vx: (Math.random()-0.5)*6,
+                            vy: (Math.random()-2)*4,
+                            size: Math.random()*12+4,
+                            color: `hsl(${Math.random()*30+320}, 90%, 70%)`,
+                            life: 1.2
+                        });
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
