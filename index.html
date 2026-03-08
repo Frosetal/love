@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Все стили без изменений (оставлены как в предыдущей версии) */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -207,7 +208,7 @@
             transform: scale(0.8);
         }
 
-        /* Игра 2: Саймон (3 раунда) */
+        /* Игра 2: Саймон (3 раунда, увеличенные длины) */
         .simon-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -475,7 +476,7 @@
                 else if (index === 4) loadGame5();
             }
 
-            // ИГРА 1: Бабочка
+            // ИГРА 1: Бабочка (без изменений)
             function loadGame1() {
                 let hits = 0;
                 let interval;
@@ -539,13 +540,13 @@
                 window.addEventListener('resize', moveButterfly);
             }
 
-            // ИГРА 2: Саймон (3 раунда)
+            // ИГРА 2: Саймон (3 раунда с увеличенными длинами: 4, 5, 6)
             function loadGame2() {
                 const colors = ['red', 'green', 'blue', 'yellow'];
                 const rounds = [
-                    { length: 3, sequence: [] },
                     { length: 4, sequence: [] },
-                    { length: 5, sequence: [] }
+                    { length: 5, sequence: [] },
+                    { length: 6, sequence: [] }
                 ];
                 rounds.forEach(r => {
                     for (let i = 0; i < r.length; i++) {
@@ -639,7 +640,7 @@
                 startRound();
             }
 
-            // ИГРА 3: Ползунок
+            // ИГРА 3: Ползунок (без изменений)
             function loadGame3() {
                 let moveInterval;
                 let gameFinished = false;
@@ -707,7 +708,7 @@
                 startMoving();
             }
 
-            // ИГРА 4: Струп-тест
+            // ИГРА 4: Струп-тест (без изменений)
             function loadGame4() {
                 const colors = ['red', 'green', 'blue', 'yellow'];
                 const colorNames = ['КРАСНЫЙ', 'ЗЕЛЁНЫЙ', 'СИНИЙ', 'ЖЁЛТЫЙ'];
@@ -783,7 +784,7 @@
                 generateNewWord();
             }
 
-            // ИГРА 5: Найди пару 5x4
+            // ИГРА 5: Найди пару 5x4 (без изменений)
             function loadGame5() {
                 const symbols = ['🌹', '🌻', '🌸', '🌺', '🌼', '🌷', '💐', '🌿', '🍀', '🌾'];
                 let cards = [];
